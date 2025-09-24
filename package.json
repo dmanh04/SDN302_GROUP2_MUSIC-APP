@@ -1,0 +1,27 @@
+{
+  "name": "sdn302_group2_music-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmanh04/SDN302_GROUP2_MUSIC-APP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dmanh04/SDN302_GROUP2_MUSIC-APP/issues"
+  },
+  "homepage": "https://github.com/dmanh04/SDN302_GROUP2_MUSIC-APP#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.2"
+  }
+}
