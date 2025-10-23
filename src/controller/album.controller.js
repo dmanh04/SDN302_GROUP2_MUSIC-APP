@@ -35,7 +35,8 @@ exports.create = async (req, res) => {
             created_by: req.user?.id || 'system'
         });
         
-        await album.save();
+        await album.save(); 
+        
         
         // Thêm album vào danh sách của artist
         artist.albums.push(album._id);
