@@ -10,6 +10,6 @@ const songRouter = require('./song.routes');
 router.use("/genres", genreRouter);
 router.use("/artists", artistRouter);
 router.use("/albums", albumRouter);
-router.use("/songs", songRouter);
+router.use("/songs", songRouter); 
 
 module.exports = router;

@@ -4,27 +4,27 @@ const Artist = require('../models/artists.model');
 const Genre = require('../models/genres.model');
 const { ok, created, badRequest, notFound, internalError } = require('../utils/baseResponse');
 
-// Tạo mới Song
+
 exports.create = async (req, res) => {
     try {
         const { title, slug, duration, artists, genres, album_id, file_path, image, lyric, policy } = req.body;
-        
+
         if (!title || title.trim() === '') {
             return res.status(400).json(badRequest('Tên bài hát không được để trống'));
         }
-        
+
         if (!slug || slug.trim() === '') {
             return res.status(400).json(badRequest('Slug không được để trống'));
         }
-        
+
         if (!duration || duration <= 0) {
             return res.status(400).json(badRequest('Thời lượng phải lớn hơn 0'));
         }
-        
+
         if (!artists || artists.length === 0) {
             return res.status(400).json(badRequest('Phải chọn ít nhất 1 nghệ sĩ'));
         }
-        
+
         if (!genres || genres.length === 0) {
             return res.status(400).json(badRequest('Phải chọn ít nhất 1 thể loại'));
         }
@@ -91,7 +91,7 @@ exports.findAll = async (req, res) => {
             .populate('artists')
             .populate('genres')
             .populate('album_id');
-            // .populate('liked_by');
+        // .populate('liked_by');
         res.status(200).json(ok(songs));
     } catch (error) {
         res.status(500).json(internalError(error.message));
@@ -106,8 +106,8 @@ exports.findOne = async (req, res) => {
             .populate('artists')
             .populate('genres')
             .populate('album_id');
-            // .populate('liked_by');
-        
+        // .populate('liked_by');
+
         if (!song) {
             return res.status(404).json(notFound('Bài hát không tìm thấy'));
         }
@@ -127,7 +127,7 @@ exports.update = async (req, res) => {
     try {
         const { id } = req.params;
         const { title, slug, duration, artists, genres, album_id, file_path, image, lyric, policy } = req.body;
-        
+
         if (!title || title.trim() === '') {
             return res.status(400).json(badRequest('Tên bài hát không được để trống'));
         }
@@ -148,11 +148,11 @@ exports.update = async (req, res) => {
             },
             { new: true, runValidators: true }
         ).populate('artists').populate('genres').populate('album_id').populate('liked_by');
-        
+
         if (!song) {
             return res.status(404).json(notFound('Bài hát không tìm thấy'));
         }
-        
+
         res.status(200).json(ok(song));
     } catch (error) {
         res.status(500).json(internalError(error.message));
@@ -164,7 +164,7 @@ exports.delete = async (req, res) => {
     try {
         const { id } = req.params;
         const song = await Song.findByIdAndDelete(id);
-        
+
         if (!song) {
             return res.status(404).json(notFound('Bài hát không tìm thấy'));
         }
@@ -179,7 +179,7 @@ exports.delete = async (req, res) => {
         if (song.album_id) {
             await Album.findByIdAndUpdate(song.album_id, { $pull: { songs: id } });
         }
-        
+
         res.status(200).json(ok(null));
     } catch (error) {
         res.status(500).json(internalError(error.message));
@@ -191,7 +191,7 @@ exports.getStatistics = async (req, res) => {
     try {
         const { id } = req.params;
         const song = await Song.findById(id);
-        
+
         if (!song) {
             return res.status(404).json(notFound('Bài hát không tìm thấy'));
         }
