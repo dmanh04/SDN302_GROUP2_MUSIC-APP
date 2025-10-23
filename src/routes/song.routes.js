@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const songController = require("../controller/song.controller");
 
-// GET /songs - Lấy tất cả songs
+
 router.get("/", songController.findAll);
 
 // POST /songs - Tạo mới song
