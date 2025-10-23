@@ -20,24 +20,27 @@ const commentSchema = new Schema({
     },
     content: {
         type: String,
-        required: true,
-        maxlength: 255
+        required: true
     },
     account_id: {
         type: Schema.Types.ObjectId,
         ref: "Account",
         required: true
     },
-    parent_id: {
-        type: Schema.Types.ObjectId,
-        ref: "Comment",
-    },
     song_id: {
         type: Schema.Types.ObjectId,
         ref: "Song",
         required: true
     },
-});
+    replies: [{
+        type: Schema.Types.ObjectId,
+        ref: "Comment"
+    }],
+    parent_id: {
+        type: Schema.Types.ObjectId,
+        ref: "Comment"
+    }
+}, { timestamps: false });
 
 const Comment = mongoose.model("Comment", commentSchema, "comments");
 module.exports = Comment;

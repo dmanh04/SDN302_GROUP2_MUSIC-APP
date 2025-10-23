@@ -2,18 +2,19 @@ const express = require("express")
 const router = express.Router()
 const artistController = require("../controller/artist.controller")
 
-// Lấy tất cả Artists và Tạo mới Artist
-// GET /artists
+// GET /artists - Lấy tất cả artists
 router.get("/", artistController.findAll)
-// POST /artists
+
+// POST /artists - Tạo mới artist
 router.post("/", artistController.create)
 
-// Lấy, Cập nhật và Xóa Artist theo ID
-// GET /artists/:id
+// GET /artists/:id - Lấy artist theo ID
 router.get("/:id", artistController.findOne)
-// PUT /artists/:id
+
+// PUT /artists/:id - Cập nhật artist
 router.put("/:id", artistController.update)
-// DELETE /artists/:id
+
+// DELETE /artists/:id - Xóa artist
 router.delete("/:id", artistController.delete)
 
 module.exports = router

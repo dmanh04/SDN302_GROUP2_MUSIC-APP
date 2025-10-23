@@ -1,4 +1,3 @@
-// models/Account.js
 const mongoose = require("mongoose");
 const { Schema } = require('mongoose');
 
@@ -9,7 +8,7 @@ const accountSchema = new Schema({
     },
     created_date: {
         type: Date,
-        default: Date.now // timestamp(6) with time zone
+        default: Date.now
     },
     last_modified_by: {
         type: String,
@@ -17,28 +16,31 @@ const accountSchema = new Schema({
     },
     last_modified_date: {
         type: Date,
-        default: Date.now // timestamp(6) with time zone
+        default: Date.now
     },
     active: {
         type: Boolean,
         default: true
     },
     avatar: {
-        type: String // text
+        type: String
     },
     email: {
         type: String,
-        required: true,
+        maxlength: 255,
         unique: true,
-        maxlength: 255
+        required: true
     },
     password_hash: {
         type: String,
-        required: true,
-        maxlength: 255
+        maxlength: 255,
+        required: true
     },
-   
-});
+    roles: [{
+        type: Schema.Types.ObjectId,
+        ref: "Role"
+    }]
+}, { timestamps: false });
 
 const Account = mongoose.model("Account", accountSchema, "accounts");
 module.exports = Account;

@@ -41,7 +41,11 @@ const albumSchema = new Schema({
         ref: "Artist",
         required: true
     },
-});
+    songs: [{
+        type: Schema.Types.ObjectId,
+        ref: "Song"
+    }]
+}, { timestamps: false });
 
 const Album = mongoose.model("Album", albumSchema, "albums");
 module.exports = Album;

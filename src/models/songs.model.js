@@ -50,17 +50,27 @@ const songSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Album"
     },
-    artists_id: {
+    artists: [{
         type: Schema.Types.ObjectId,
-        ref: "Artist",
-        required: true
+        ref: "Artist"
+    }],
+    genres: [{
+        type: Schema.Types.ObjectId,
+        ref: "Genre"
+    }],
+    likes: {
+        type: Number,
+        default: 0
     },
-    genres_id: {
+    views: {
+        type: Number,
+        default: 0
+    },
+    liked_by: [{
         type: Schema.Types.ObjectId,
-        ref: "Genre",
-        required: true
-    }
-});
+        ref: "Account"
+    }]
+}, { timestamps: false });
 
 const Song = mongoose.model("Song", songSchema, "songs");
 module.exports = Song;

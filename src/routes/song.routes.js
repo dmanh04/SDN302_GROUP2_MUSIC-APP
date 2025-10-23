@@ -2,16 +2,22 @@ const express = require("express");
 const router = express.Router();
 const songController = require("../controller/song.controller");
 
-// Lấy tất cả và Tạo mới Song
+// GET /songs - Lấy tất cả songs
 router.get("/", songController.findAll);
+
+// POST /songs - Tạo mới song
 router.post("/", songController.create);
 
-// Lấy, Cập nhật và Xóa Song theo ID
+// GET /songs/:id - Lấy song theo ID
 router.get("/:id", songController.findOne);
+
+// PUT /songs/:id - Cập nhật song
 router.put("/:id", songController.update);
+
+// DELETE /songs/:id - Xóa song
 router.delete("/:id", songController.delete);
 
-// Route tùy chỉnh: Lấy thống kê của bài hát
+// GET /songs/:id/stats - Lấy thống kê song
 router.get("/:id/stats", songController.getStatistics);
 
 module.exports = router;

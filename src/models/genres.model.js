@@ -6,7 +6,7 @@ const genreSchema = new Schema({
         type: String,
         required: true,
         maxlength: 255
-    },
+    }
 }, { timestamps: false });
 
 const Genre = mongoose.model("Genre", genreSchema, "genres");

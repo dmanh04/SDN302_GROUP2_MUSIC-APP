@@ -2,22 +2,22 @@ const express = require("express")
 const router = express.Router()
 const albumController = require("../controller/album.controller")
 
-// Lấy tất cả Albums và Tạo mới Album
-// GET /albums
+// GET /albums - Lấy tất cả albums
 router.get("/", albumController.findAll)
-// POST /albums
+
+// POST /albums - Tạo mới album
 router.post("/", albumController.create)
 
-// Lấy, Cập nhật và Xóa Album theo ID
-// GET /albums/:id
+// GET /albums/:id - Lấy album theo ID
 router.get("/:id", albumController.findOne)
-// PUT /albums/:id
-router.put("/:id", albumController.update)
-// DELETE /albums/:id
-router.delete("/:id", albumController.delete)
 
-// Route tùy chỉnh: Lấy tất cả bài hát thuộc Album này
-// GET /albums/:id/songs
+// GET /albums/:id/songs - Lấy tất cả bài hát của album
 router.get("/:id/songs", albumController.getAlbumSongs)
+
+// PUT /albums/:id - Cập nhật album
+router.put("/:id", albumController.update)
+
+// DELETE /albums/:id - Xóa album
+router.delete("/:id", albumController.delete)
 
 module.exports = router

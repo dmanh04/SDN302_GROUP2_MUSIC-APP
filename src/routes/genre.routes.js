@@ -2,18 +2,19 @@ const express = require("express")
 const router = express.Router()
 const genreController = require("../controller/genre.controller")
 
-// Lấy tất cả Genres và Tạo mới Genre
-// GET /genres
+// GET /genres - Lấy tất cả genres
 router.get("/", genreController.findAll)
-// POST /genres
+
+// POST /genres - Tạo mới genre
 router.post("/", genreController.create)
 
-// Lấy, Cập nhật và Xóa Genre theo ID
-// GET /genres/:id
+// GET /genres/:id - Lấy genre theo ID
 router.get("/:id", genreController.findOne)
-// PUT /genres/:id
+
+// PUT /genres/:id - Cập nhật genre
 router.put("/:id", genreController.update)
-// DELETE /genres/:id
+
+// DELETE /genres/:id - Xóa genre
 router.delete("/:id", genreController.delete)
 
 module.exports = router
