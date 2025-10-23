@@ -8,12 +8,12 @@ const {
 } = require("../utils/baseResponse")
 
 // Tạo mới Artist
-exports.create = async (req, re) => {
+exports.create = async (req, res) => {
   try {
     const { name, bio, avatar } = req.body
 
     if (!name || name.trim() === "") {
-      return re.status(400).json(badRequest("Tên nghệ sĩ không được để trống"))
+      return res.tatus(400).json(badRequest("Tên nghệ sĩ không được để trống"))
     }
 
     const artist = new Artist({
@@ -25,9 +25,9 @@ exports.create = async (req, re) => {
     })
     await artist.save()
 
-    re.status(201).json(created(artist))
+    res.status(201).json(created(artist))
   } catch (error) {
-    re.status(500).json(internalError(error.message))
+    res.status(500).json(internalError(error.message))
   }
 }
 
