@@ -6,10 +6,6 @@ const roleSchema = new Schema({
         type: String,
         maxlength: 255,
         required: true
-    },
-    id: {
-        type: String,
-        maxlength: 255
     }
 }, { timestamps: false });
 

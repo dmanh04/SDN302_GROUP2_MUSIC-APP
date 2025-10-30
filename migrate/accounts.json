@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$oid": "69031a278d7fbb4dcb5d4127"
+  },
+  "active": true,
+  "email": "user@gmail.com",
+  "password_hash": "$2a$10$5sRnMg13Ag8ohBLWzL0gGuU41qvi89KNP/WMtSEXR6/LMeuAtHVvi",
+  "roles": [
+    {
+      "$oid": "690316f2ee749596e092a40d"
+    }
+  ],
+  "created_date": {
+    "$date": "2025-10-30T07:56:23.306Z"
+  },
+  "last_modified_date": {
+    "$date": "2025-10-30T07:56:23.306Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69031a6495f17dcc35408a63"
+  },
+  "active": true,
+  "email": "artist@gmail.com",
+  "password_hash": "$2a$10$fioJMWl0tnurMyTKsaDBoeiqFNsfuL/./x.AQeaPLcgd.8TfpFgba",
+  "roles": [
+    {
+      "$oid": "690316f2ee749596e092a40c"
+    }
+  ],
+  "created_date": {
+    "$date": "2025-10-30T07:57:24.800Z"
+  },
+  "last_modified_date": {
+    "$date": "2025-10-30T07:57:24.800Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69031a821a8ac34a4e8517cc"
+  },
+  "active": true,
+  "email": "admin@gmail.com",
+  "password_hash": "$2a$10$QXLSxiRhgF/O86ddYv2.M.ZUpeuUV0uDBFg4ahwwxXvjAc31bWouK",
+  "roles": [
+    {
+      "$oid": "690316f2ee749596e092a40b"
+    }
+  ],
+  "created_date": {
+    "$date": "2025-10-30T07:57:54.817Z"
+  },
+  "last_modified_date": {
+    "$date": "2025-10-30T07:57:54.817Z"
+  },
+  "__v": 0
+}]

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = require('mongoose');
+const bcrypt = require("bcryptjs"); 
 
 const accountSchema = new Schema({
     created_by: {
@@ -41,6 +42,23 @@ const accountSchema = new Schema({
         ref: "Role"
     }]
 }, { timestamps: false });
+
+accountSchema.pre("save", async function (next) {
+  const user = this;
+  if (!user.isModified("password_hash")) return next();
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(user.password_hash, salt); 
+    user.password_hash = hash; // gán lại
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+accountSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password_hash);
+};
 
 const Account = mongoose.model("Account", accountSchema, "accounts");
 module.exports = Account;
