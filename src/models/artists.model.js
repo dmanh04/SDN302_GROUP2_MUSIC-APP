@@ -1,43 +1,48 @@
-const mongoose = require("mongoose");
-const { Schema } = require('mongoose');
+const mongoose = require("mongoose")
 
-const artistSchema = new Schema({
-    created_by: {
-        type: String,
-        maxlength: 50
+const ArtistSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      unique: true,
     },
-    created_date: {
-        type: Date,
-        default: Date.now
-    },
-    last_modified_by: {
-        type: String,
-        maxlength: 50
-    },
-    last_modified_date: {
-        type: Date,
-        default: Date.now
-    },
-    avatar: {
-        type: String
-    },
-    bio: {
-        type: String
-    },
-    name: {
-        type: String,
-        required: true,
-        maxlength: 255
-    },
-    albums: [{
-        type: Schema.Types.ObjectId,
-        ref: "Album"
-    }],
-    songs: [{
-        type: Schema.Types.ObjectId,
-        ref: "Song"
-    }]
-}, { timestamps: false });
+    stageName: { type: String, required: true },
+    bio: { type: String, default: "" },
+    avatarUrl: { type: String, default: "" },
+    bannerUrl: { type: String, default: "" },
+    location: { type: String, default: "" },
+    genreFocus: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Genre",
+      },
+    ],
 
-const Artist = mongoose.model("Artist", artistSchema, "artists");
-module.exports = Artist;
+    socialLinks: {
+      instagram: String,
+      youtube: String,
+      facebook: String,
+      tiktok: String,
+    },
+    isVerified: { type: Boolean, default: false },
+    followerCount: { type: Number, default: 0 },
+    followingCount: { type: Number, default: 0 },
+    songs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Song",
+      },
+    ],
+    albums: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Album",
+      },
+    ],
+  },
+  { timestamps: true }
+)
+
+module.exports = mongoose.model("Artist", ArtistSchema)
