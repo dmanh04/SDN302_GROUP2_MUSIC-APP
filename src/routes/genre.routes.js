@@ -3,7 +3,7 @@ const router = express.Router();
 const genreController = require("../controller/genre.controller")
 const authGuard = require("../middleware/auth.guard");
 const permisionGuard = require("../middleware/permission.guard");
-const {ROLE} = require("../constants/role");
+const { ROLE } = require("../constants/role");
 
 /**
  * @swagger
@@ -111,7 +111,7 @@ router.delete('/:id', authGuard, permisionGuard(ROLE.ADMIN), genreController.del
  *       404:
  *         description: Không tìm thấy thể loại để cập nhật
  */
-router.put('/:id', authGuard, genreController.updateGenre);
+router.put('/:id', authGuard, permisionGuard(ROLE.ADMIN), genreController.updateGenre);
 
 
 module.exports = router
