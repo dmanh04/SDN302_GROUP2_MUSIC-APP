@@ -4,6 +4,7 @@ const artistController = require("../controller/artist.controller")
 const authGuard = require("../middleware/auth.guard");
 const permisionGuard = require("../middleware/permission.guard");
 const {auth} = require("../controller/auth.controller");
+const {ROLE} = require("../constants/role");
 
 /**
  * @swagger
@@ -50,7 +51,7 @@ const {auth} = require("../controller/auth.controller");
 
 /**
  * @swagger
- * /api/artists:
+ * /artists:
  *   post:
  *     summary: Tạo mới nghệ sĩ
  *     tags: [Artists]
@@ -85,7 +86,7 @@ router.post("/", authGuard, artistController.createArtist)
 
 /**
  * @swagger
- * /api/artists:
+ * /artists:
  *   get:
  *     summary: Lấy danh sách nghệ sĩ
  *     tags: [Artists]
@@ -110,7 +111,7 @@ router.get("/", artistController.getAllArtists)
 
 /**
  * @swagger
- * /api/artists/{id}:
+ * /artists/{id}:
  *   get:
  *     summary: Xem chi tiết nghệ sĩ
  *     tags: [Artists]
@@ -130,7 +131,7 @@ router.get("/:id", artistController.getArtistById)
 
 /**
  * @swagger
- * /api/artists/{id}:
+ * /artists/{id}:
  *   put:
  *     summary: Cập nhật thông tin nghệ sĩ
  *     tags: [Artists]
@@ -150,6 +151,6 @@ router.get("/:id", artistController.getArtistById)
  *       404:
  *         description: Không tìm thấy nghệ sĩ
  */
-router.put("/:id", authGuard, artistController.updateArtist)
+router.put("/:id", authGuard, permisionGuard(ROLE.ARTIST), artistController.updateArtist)
 
 module.exports = router

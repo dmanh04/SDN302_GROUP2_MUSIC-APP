@@ -3,6 +3,7 @@ const router = express.Router();
 const genreController = require("../controller/genre.controller")
 const authGuard = require("../middleware/auth.guard");
 const permisionGuard = require("../middleware/permission.guard");
+const {ROLE} = require("../constants/role");
 
 /**
  * @swagger
@@ -48,7 +49,7 @@ router.get('/', genreController.getGenres);
  *       400:
  *         description: Thể loại này đã tồn tại.
  */
-router.post('/create', authGuard, permisionGuard("ADMIN"), genreController.createGenre);
+router.post('/create', authGuard, permisionGuard(ROLE.ADMIN), genreController.createGenre);
 
 /**
  * @swagger
@@ -70,6 +71,6 @@ router.post('/create', authGuard, permisionGuard("ADMIN"), genreController.creat
  *       404:
  *         description: Không tìm thấy thể loại để xóa
  */
-router.delete('/:id', authGuard, permisionGuard("ADMIN"), genreController.deleteGenre);
+router.delete('/:id', authGuard, permisionGuard(ROLE.ADMIN), genreController.deleteGenre);
 
 module.exports = router
