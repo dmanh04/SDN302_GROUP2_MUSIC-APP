@@ -6,6 +6,7 @@ const createError = require('http-errors');
 const { connectDB } = require('./configs/database');
 const router = require('./routes');
 const config = require('./configs/index');
+const swaggerDocs = require("./configs/swagger");
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ async function startServer() {
     await connectDB();
 
     app.use('/api', router);
+    swaggerDocs(app);
 
     app.listen(PORT, () => {
       console.log(`✅ Server running at http://localhost:${PORT}`);

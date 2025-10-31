@@ -1,13 +1,17 @@
 const Genre = require('../models/genres.model');
 const { ok, created, badRequest, notFound, internalError } = require('../utils/baseResponse');
 
-// Tạo mới Genre
 exports.create = async (req, res) => {
     try {
         const { name } = req.body;
         
         if (!name || name.trim() === '') {
             return res.status(400).json(badRequest('Tên thể loại không được để trống'));
+        }
+
+        const exists = await Genre.findOne({ name });
+        if (exists) {
+            return res.status(400).json(badRequest('Tên thể loại đã tồn tại!'));
         }
 
         const genre = new Genre({ name });
@@ -45,7 +49,6 @@ exports.findOne = async (req, res) => {
     }
 };
 
-// Cập nhật Genre theo ID
 exports.update = async (req, res) => {
     try {
         const { id } = req.params;
@@ -53,6 +56,10 @@ exports.update = async (req, res) => {
         
         if (!name || name.trim() === '') {
             return res.status(400).json(badRequest('Tên thể loại không được để trống'));
+        }
+        const exists = await Genre.findOne({ _id: { $ne: id }, name });
+        if (exists) {
+            return res.status(400).json(badRequest('Tên thể loại đã tồn tại!'));
         }
 
         const genre = await Genre.findByIdAndUpdate(id, { name }, { new: true, runValidators: true });
@@ -67,7 +74,6 @@ exports.update = async (req, res) => {
     }
 };
 
-// Xóa Genre theo ID
 exports.delete = async (req, res) => {
     try {
         const { id } = req.params;
@@ -77,7 +83,7 @@ exports.delete = async (req, res) => {
             return res.status(404).json(notFound('Thể loại không tìm thấy'));
         }
         
-        res.status(200).json(ok(null));
+        res.status(200).json(ok(genre));
     } catch (error) {
         res.status(500).json(internalError(error.message));
     }
