@@ -55,3 +55,15 @@ exports.createGenre = async (req, res) => {
     }
 }
 
+exports.deleteGenre = async (req, res) => {
+    try {
+        const genre = await Genre.findByIdAndDelete(req.params.id);
+        if (!genre) {
+            return res.status(400).json(badRequest("Thể loại này không tồn tại."))
+        }
+        res.status(204).json(ok(genre));
+    } catch (error) {
+        res.status(500).json(internalError(error.message));
+    }
+}
+

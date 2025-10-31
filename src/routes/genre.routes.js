@@ -18,7 +18,7 @@ router.get('/', genreController.getGenres);
 
 /**
  * @swagger
- * /create:
+ * /genres/create:
  *   post:
  *     summary: Tạo thể loại mới
  *     tags: [Genre]
@@ -49,5 +49,27 @@ router.get('/', genreController.getGenres);
  *         description: Thể loại này đã tồn tại.
  */
 router.post('/create', authGuard, permisionGuard("ADMIN"), genreController.createGenre);
+
+/**
+ * @swagger
+ * /genres/{id}:
+ *   delete:
+ *     summary: Xóa thể loại nhạc theo ID
+ *     tags: [Genre]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *           format: ObjectId
+ *         required: true
+ *         description: "ID của thể loại cần xóa (Ví dụ: 65b4c4e7f8d6a7b9c0e1d2c3)"
+ *     responses:
+ *       204:
+ *         description: Xóa thành công
+ *       404:
+ *         description: Không tìm thấy thể loại để xóa
+ */
+router.delete('/:id', authGuard, permisionGuard("ADMIN"), genreController.deleteGenre);
 
 module.exports = router
