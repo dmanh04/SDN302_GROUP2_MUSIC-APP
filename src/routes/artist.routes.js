@@ -1,6 +1,9 @@
 const express = require("express")
 const router = express.Router()
 const artistController = require("../controller/artist.controller")
+const authGuard = require("../middleware/auth.guard");
+const permisionGuard = require("../middleware/permission.guard");
+const {auth} = require("../controller/auth.controller");
 
 /**
  * @swagger
@@ -78,7 +81,7 @@ const artistController = require("../controller/artist.controller")
  *       500:
  *         description: Lỗi máy chủ
  */
-router.post("/", artistController.createArtist)
+router.post("/", authGuard, artistController.createArtist)
 
 /**
  * @swagger
@@ -147,6 +150,6 @@ router.get("/:id", artistController.getArtistById)
  *       404:
  *         description: Không tìm thấy nghệ sĩ
  */
-router.put("/:id", artistController.updateArtist)
+router.put("/:id", authGuard, artistController.updateArtist)
 
 module.exports = router
