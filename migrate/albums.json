@@ -1,0 +1,38 @@
+[
+  {
+    "created_by": "69031a821a8ac34a4e8517cc", 
+    "last_modified_by": "69031a821a8ac34a4e8517cc",
+    "image": "https://imagestore.com/album-vpop.jpg",
+    "title": "Giai Điệu Vàng Mùa Hè 2025",
+    "slug": "giai-dieu-vang-mua-he-2025",
+    "status": "published",
+    "artist": ["6903dcba28ef7386d03c5ba8"],
+    "songs": ["6904d247f94cd8e21b9b68ed", "6904d247f94cd8e21b9b68ee"], 
+    "createdAt": "2025-11-01T05:30:00.000Z",
+    "updatedAt": "2025-11-01T05:30:00.000Z"
+  },
+  {
+    "created_by": "69031a821a8ac34a4e8517cc",
+    "last_modified_by": "69031a821a8ac34a4e8517cc",
+    "image": "https://imagestore.com/album-kpop.jpg",
+    "title": "K-Pop Hits Fever",
+    "slug": "k-pop-hits-fever",
+    "status": "premium",
+    "artist": ["6903dcba28ef7386d03c5ba8"], 
+    "songs": [],
+    "createdAt": "2025-11-01T05:35:00.000Z",
+    "updatedAt": "2025-11-01T05:35:00.000Z"
+  },
+  {
+    "created_by": "69031a821a8ac34a4e8517cc",
+    "last_modified_by": "69031a821a8ac34a4e8517cc",
+    "image": "https://imagestore.com/album-rock.jpg",
+    "title": "Classic Rock Legends",
+    "slug": "classic-rock-legends",
+    "status": "draft",
+    "artist": ["6903dcba28ef7386d03c5ba8"], 
+    "songs": ["6904d247f94cd8e21b9b68f1"], 
+    "createdAt": "2025-11-01T05:40:00.000Z",
+    "updatedAt": "2025-11-01T05:40:00.000Z"
+  }
+]
