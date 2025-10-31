@@ -1,3 +1,4 @@
+const { default: slugify } = require('slugify');
 const Genre = require('../models/genres.model');
 const { ok, created, badRequest, notFound, internalError } = require('../utils/baseResponse');
 
@@ -67,3 +68,42 @@ exports.deleteGenre = async (req, res) => {
     }
 }
 
+exports.updateGenre = async (req, res) => {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    if (Object.keys(updateData).length === 0) {
+        return res.status(400).json(badRequest("Vui lòng cung cấp ít nhất 1 trường để cập nhật."))
+    }
+
+    try {
+        const updateGenre = await Genre.findByIdAndUpdate(
+            id,
+            updateData,
+            {
+                new: true,
+                runValidators: true
+            }
+        )
+
+        if (!updateGenre) {
+            return res.status(404).json(notFound("Không tìm thấy thể loại để cập nhật"));
+        }
+
+        if (updateData.name) {
+            const newSlug = slugify(updateData.name, { lower: true, strict: true });
+            updateGenre.slug = newSlug;
+            await updateGenre.save();
+        }
+
+        res.status(200).json(ok(updateGenre.toObject(), "Cập nhật thể loại thành công"))
+    } catch (error) {
+        console.error('Lỗi khi cập nhật thể loại:', error);
+
+        if (error.name === 'ValidationError' || error.code === 11000) { // 11000 là lỗi trùng lặp MongoDB
+            return res.status(400).json(badRequest("Dữ liệu cập nhật không hợp lệ (có thể tên bị trùng)."));
+        }
+
+        res.status(500).json(internalError(error.message));
+    }
+}

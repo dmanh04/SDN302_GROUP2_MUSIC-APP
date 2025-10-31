@@ -72,4 +72,45 @@ router.post('/create', authGuard, permisionGuard("ADMIN"), genreController.creat
  */
 router.delete('/:id', authGuard, permisionGuard("ADMIN"), genreController.deleteGenre);
 
+/**
+ * @swagger
+ * /genres/{id}:
+ *   put:
+ *     summary: Cập nhật thông tin thể loại nhạc theo ID
+ *     tags: [Genre]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *           format: ObjectId
+ *         required: true
+ *         description: "ID của thể loại cần cập nhật (Ví dụ: 65b4c4e7f8d6a7b9c0e1d2c3)"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Nhạc Pop
+ *               description:
+ *                 type: string
+ *                 example: "Thể loại nhạc phổ biến, dễ nghe và nhiều giai điệu bắt tai."
+ *               thumbnail:
+ *                 type: string
+ *                 example: "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg"
+ *     responses:
+ *       200:
+ *         description: Cập nhật thể loại thành công
+ *       400:
+ *         description: Vui lòng cung cấp ít nhất 1 trường để cập nhật.
+ *       404:
+ *         description: Không tìm thấy thể loại để cập nhật
+ */
+router.put('/:id', authGuard, genreController.updateGenre);
+
+
 module.exports = router
