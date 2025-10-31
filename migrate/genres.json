@@ -1,0 +1,42 @@
+[
+    {
+        "_id": "6904857bf94cd8e21b9b68d6",
+        "name": "Pop Ballad Việt",
+        "slug": "pop-ballad-viet",
+        "description": "Những bản nhạc Pop Ballad nhẹ nhàng, tình cảm của các nghệ sĩ Việt Nam.",
+        "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
+        "songs": []
+    },
+    {
+        "_id": "6904857bf94cd8e21b9b68d7",
+        "name": "K-Pop Dance",
+        "slug": "k-pop-dance",
+        "description": "Các ca khúc K-Pop sôi động, thích hợp cho việc tập nhảy và tiệc tùng.",
+        "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
+        "songs": []
+    },
+    {
+        "_id": "6904857bf94cd8e21b9b68d8",
+        "name": "US-UK Rock Classic",
+        "slug": "us-uk-rock-classic",
+        "description": "Tuyển tập những bài Rock kinh điển từ Mỹ và Anh thập niên 70, 80.",
+        "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
+        "songs": []
+    },
+    {
+        "_id": "6904857bf94cd8e21b9b68d9",
+        "name": "EDM Trance",
+        "slug": "edm-trance",
+        "description": "Thể loại nhạc điện tử Trance với nhịp điệu nhanh và dồn dập.",
+        "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
+        "songs": []
+    },
+    {
+        "_id": "6904857bf94cd8e21b9b68da",
+        "name": "Nhạc Không Lời",
+        "slug": "nhac-khong-loi",
+        "description": "Những bản nhạc không lời nhẹ nhàng, thích hợp để thư giãn hoặc làm việc.",
+        "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
+        "songs": []
+    }
+]
