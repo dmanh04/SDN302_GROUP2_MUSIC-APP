@@ -1,0 +1,30 @@
+[{
+  "_id": {
+    "$oid": "6903dcba28ef7386d03c5ba8"
+  },
+  "userId": {
+    "$oid": "69031a6495f17dcc35408a63"
+  },
+  "stageName": "LofiDreams",
+  "bio": "Producer chuyên về nhạc chill.",
+  "avatarUrl": "https://cdn.example.com/avatar.jpg",
+  "bannerUrl": "",
+  "location": "",
+  "genreFocus": [
+    {
+      "$oid": "6903dcaf78d4a9e75b287f23"
+    }
+  ],
+  "isVerified": false,
+  "followerCount": 0,
+  "followingCount": 0,
+  "songs": [],
+  "albums": [],
+  "createdAt": {
+    "$date": "2025-10-30T21:46:34.281Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-30T21:46:34.281Z"
+  },
+  "__v": 0
+}]

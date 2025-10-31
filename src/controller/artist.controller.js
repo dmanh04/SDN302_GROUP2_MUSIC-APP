@@ -1,4 +1,5 @@
 const Artist = require("../models/artists.model")
+const Genre = require("../models/genres.model")
 const {
   ok,
   created,
@@ -7,98 +8,94 @@ const {
   internalError,
 } = require("../utils/baseResponse")
 
-// Tạo mới Artist
-exports.create = async (req, res) => {
+exports.createArtist = async (req, res) => {
   try {
-    const { name, bio, avatar } = req.body
-
-    if (!name || name.trim() === "") {
-      return res.tatus(400).json(badRequest("Tên nghệ sĩ không được để trống"))
+    const {
+      userId,
+      stageName,
+      bio,
+      avatarUrl,
+      bannerUrl,
+      location,
+      genreFocus,
+      socialLinks,
+    } = req.body
+    const existing = await Artist.findOne({ userId })
+    if (existing)
+      return res
+        .status(400)
+        .json(badRequest("Tài khoản này đã được đăng ký làm nghệ sĩ."))
+    if (genreFocus?.length) {
+      const validGenres = await Genre.find({ _id: { $in: genreFocus } })
+      if (validGenres.length !== genreFocus.length)
+        return res
+          .status(400)
+          .json(badRequest("Một hoặc nhiều thể loại không hợp lệ."))
     }
-
-    const artist = new Artist({
-      name,
-      bio: bio || "",
-      avatar: avatar || "",
-      albums: [],
-      songs: [],
+    const artist = await Artist.create({
+      userId,
+      stageName,
+      bio,
+      avatarUrl,
+      bannerUrl,
+      location,
+      genreFocus,
+      socialLinks,
     })
-    await artist.save()
 
-    res.status(201).json(created(artist))
-  } catch (error) {
-    res.status(500).json(internalError(error.message))
+    return res.status(201).json(created(artist))
+  } catch (err) {
+    console.error("❌ Lỗi khi tạo nghệ sĩ:", err)
+    return res.status(500).json(internalError(err.message))
   }
 }
 
-// Lấy tất cả Artists
-exports.findAll = async (req, res) => {
+exports.getAllArtists = async (req, res) => {
   try {
-    const artists = await Artist.find({}).populate("albums").populate("songs")
-    res.status(200).json(ok(artists))
-  } catch (error) {
-    res.status(500).json(internalError(error.message))
+    const artists = await Artist.find()
+      .populate("genreFocus", "name")
+      .populate("songs", "title coverUrl")
+      .populate("albums", "title coverUrl releaseDate")
+      .sort({ createdAt: -1 })
+
+    return res.status(200).json(ok(artists))
+  } catch (err) {
+    console.error("❌ Lỗi khi lấy danh sách nghệ sĩ:", err)
+    return res.status(500).json(internalError(err.message))
   }
 }
 
-// Lấy Artist theo ID
-exports.findOne = async (req, res) => {
+exports.getArtistById = async (req, res) => {
   try {
-    const { id } = req.params
-    const artist = await Artist.findById(id)
-      .populate("albums")
-      .populate("songs")
+    const artist = await Artist.findById(req.params.id)
+      .populate("genreFocus", "name description")
+      .populate("songs", "title")
+      .populate("albums", "title")
 
-    if (!artist) {
-      return res.status(404).json(notFound("Nghệ sĩ không tìm thấy"))
-    }
+    if (!artist)
+      return res.status(404).json(notFound("Không tìm thấy nghệ sĩ."))
 
-    res.status(200).json(ok(artist))
-  } catch (error) {
-    res.status(500).json(internalError(error.message))
+    return res.status(200).json(ok(artist))
+  } catch (err) {
+    console.error("❌ Lỗi khi lấy thông tin nghệ sĩ:", err)
+    return res.status(500).json(internalError(err.message))
   }
 }
 
-// Cập nhật Artist theo ID
-exports.update = async (req, res) => {
-  try {
-    const { id } = req.params
-    const { name, bio, avatar } = req.body
-
-    if (!name || name.trim() === "") {
-      return res.status(400).json(badRequest("Tên nghệ sĩ không được để trống"))
-    }
-
-    const artist = await Artist.findByIdAndUpdate(
-      id,
-      { name, bio: bio || "", avatar: avatar || "" },
-      { new: true, runValidators: true }
-    )
-      .populate("albums")
-      .populate("songs")
-
-    if (!artist) {
-      return res.status(404).json(notFound("Nghệ sĩ không tìm thấy"))
-    }
-
-    res.status(200).json(ok(artist))
-  } catch (error) {
-    res.status(500).json(internalError(error.message))
-  }
-}
-
-// Xóa Artist theo ID
-exports.delete = async (req, res) => {
+exports.updateArtist = async (req, res) => {
   try {
     const { id } = req.params
-    const artist = await Artist.findByIdAndDelete(id)
+    const updates = req.body
 
-    if (!artist) {
-      return res.status(404).json(notFound("Nghệ sĩ không tìm thấy"))
-    }
+    const artist = await Artist.findByIdAndUpdate(id, updates, {
+      new: true,
+    }).populate("genreFocus", "name")
 
-    res.status(200).json(ok(null))
-  } catch (error) {
-    res.status(500).json(internalError(error.message))
+    if (!artist) return res.status(404).json(notFound("Nghệ sĩ không tồn tại."))
+
+    return res.status(200).json(ok(artist))
+  } catch (err) {
+    console.error("❌ Lỗi khi cập nhật nghệ sĩ:", err)
+    return res.status(500).json(internalError(err.message))
   }
 }
