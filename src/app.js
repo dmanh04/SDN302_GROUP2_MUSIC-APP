@@ -1,33 +1,34 @@
-const express = require("express")
-const dotenv = require("dotenv")
-const morgan = require("morgan")
-const cors = require("cors")
-const createError = require("http-errors")
-const { connectDB } = require("./configs/database")
-const router = require("./routes")
-const config = require("./configs/index")
-const setupSwagger = require("./swagger")
+const express = require('express');
+const dotenv = require('dotenv');
+const morgan = require('morgan');
+const cors = require('cors');
+const createError = require('http-errors');
+const { connectDB } = require('./configs/database');
+const router = require('./routes');
+const config = require('./configs/index');
+const swaggerDocs = require("./configs/swagger");
 
-dotenv.config()
+dotenv.config();
 
-const app = express()
-const PORT = config.port || 3000
+const app = express();
+const PORT = config.port || 3000;
 
-app.use(express.json())
+app.use(express.json());
 
 async function startServer() {
   try {
-    await connectDB()
+    await connectDB();
 
-    app.use("/api", router)
-    setupSwagger(app)
+    app.use('/api', router);
+    swaggerDocs(app);
+
     app.listen(PORT, () => {
-      console.log(`✅ Server running at http://localhost:${PORT}`)
-    })
+      console.log(`✅ Server running at http://localhost:${PORT}`);
+    });
   } catch (err) {
-    console.error("❌ Failed to start server:", err)
-    process.exit(1)
+    console.error('❌ Failed to start server:', err);
+    process.exit(1);
   }
 }
 
-startServer()
+startServer();
