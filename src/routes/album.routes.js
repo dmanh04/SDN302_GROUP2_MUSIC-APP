@@ -1,24 +1,230 @@
-const express = require("express")
-const router = express.Router()
-const albumController = require("../controller/album.controller")
+const express = require("express");
+const router = express.Router();
+const albumController = require("../controller/album.controller");
 const authGuard = require("../middleware/auth.guard");
 
-// GET /albums - Lấy tất cả albums
-router.get("/", albumController.findAll)
+/**
+ * @swagger
+ * tags:
+ *   name: Album
+ *   description: API quản lý album nhạc
+ */
 
-// POST /albums - Tạo mới album
-router.post("/", authGuard ,albumController.create)
+/**
+ * @swagger
+ * /albums:
+ *   get:
+ *     summary: Lấy danh sách tất cả album
+ *     tags: [Album]
+ *     responses:
+ *       200:
+ *         description: Lấy danh sách album thành công
+ */
+router.get("/", albumController.getAlbums);
 
-// GET /albums/:id - Lấy album theo ID
-router.get("/:id", albumController.findOne)
+/**
+ * @swagger
+ * /albums/create:
+ *   post:
+ *     summary: Tạo mới một album
+ *     tags: [Album]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - artist
+ *               - image
+ *               - status
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: Album Mới Nhất
+ *               artist:
+ *                 type: string
+ *                 example: Sơn Tùng M-TP
+ *               status:
+ *                 type: string
+ *                 example: "published"
+ *               image:
+ *                 type: string
+ *                 example: "https://example.com/images/album.jpg"
+ *     responses:
+ *       201:
+ *         description: Tạo album thành công
+ *       400:
+ *         description: Dữ liệu không hợp lệ hoặc album đã tồn tại
+ */
+router.post("/create", authGuard, albumController.createAlbum);
 
-// GET /albums/:id/songs - Lấy tất cả bài hát của album
-router.get("/:id/songs", albumController.getAlbumSongs)
+/**
+ * @swagger
+ * /albums/{id}:
+ *   get:
+ *     summary: Lấy thông tin chi tiết của album theo ID
+ *     tags: [Album]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: ObjectId
+ *         description: "ID của album cần lấy (Ví dụ: 65b4c4e7f8d6a7b9c0e1d2c3)"
+ *     responses:
+ *       200:
+ *         description: Lấy thông tin album thành công
+ *       404:
+ *         description: Không tìm thấy album
+ */
+router.get("/:id", albumController.findOneAlbum);
 
-// PUT /albums/:id - Cập nhật album
-router.put("/:id", authGuard ,albumController.update)
+/**
+ * @swagger
+ * /albums/{id}/songs:
+ *   get:
+ *     summary: Lấy danh sách bài hát trong một album
+ *     tags: [Album]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: ObjectId
+ *         description: "ID của album cần lấy bài hát (Ví dụ: 65b4c4e7f8d6a7b9c0e1d2c3)"
+ *     responses:
+ *       200:
+ *         description: Lấy danh sách bài hát thành công
+ *       404:
+ *         description: Không tìm thấy album hoặc bài hát
+ */
+router.get("/:id/songs", albumController.getAlbumSongs);
 
-// DELETE /albums/:id - Xóa album
-router.delete("/:id", authGuard ,albumController.delete)
+/**
+ * @swagger
+ * /albums/{id}:
+ *   put:
+ *     summary: Cập nhật thông tin album theo ID
+ *     tags: [Album]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: ObjectId
+ *         description: "ID của album cần cập nhật (Ví dụ: 65b4c4e7f8d6a7b9c0e1d2c3)"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - artist
+ *               - image
+ *               - status
+ *               - songs
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: Album Mới Nhất
+ *               artist:
+ *                 type: string
+ *                 example: Sơn Tùng M-TP
+ *               status:
+ *                 type: string
+ *                 example: "published"
+ *               image:
+ *                 type: string
+ *                 example: "https://example.com/images/album.jpg"
+ *               songs:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: ObjectId
+ *                 example:
+ *                   - "6904d247f94cd8e21b9b68ed"
+ *                   - "6904d247f94cd8e21b9b68ee"
+ *     responses:
+ *       200:
+ *         description: Cập nhật album thành công
+ *       400:
+ *         description: Dữ liệu không hợp lệ
+ *       404:
+ *         description: Không tìm thấy album để cập nhật
+ */
+router.put("/:id", authGuard, albumController.updateAlbum);
 
-module.exports = router
+/**
+ * @swagger
+ * /albums/{id}:
+ *   delete:
+ *     summary: Xóa album theo ID
+ *     tags: [Album]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: ObjectId
+ *         description: "ID của album cần xóa (Ví dụ: 65b4c4e7f8d6a7b9c0e1d2c3)"
+ *     responses:
+ *       204:
+ *         description: Xóa album thành công
+ *       404:
+ *         description: Không tìm thấy album để xóa
+ */
+router.delete("/:id", authGuard, albumController.deleteAlbum);
+
+/**
+ * @swagger
+ * /albums/{albumId}/songs/{songId}:
+ *   delete:
+ *     summary: Xóa một bài hát khỏi album
+ *     description: Loại bỏ bài hát có ID cụ thể khỏi album tương ứng. Chỉ người dùng đã xác thực mới được phép thực hiện.
+ *     tags: [Album]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: albumId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: ObjectId
+ *         description: "ID của album chứa bài hát cần xóa (VD: 65b4c4e7f8d6a7b9c0e1d2c3)"
+ *       - in: path
+ *         name: songId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: ObjectId
+ *         description: "ID của bài hát cần xóa khỏi album (VD: 65b4c4e7f8d6a7b9c0e1d2c4)"
+ *     responses:
+ *       200:
+ *         description: Xóa bài hát khỏi album thành công
+ *       400:
+ *         description: ID album hoặc bài hát không hợp lệ
+ *       401:
+ *         description: Không có quyền truy cập (thiếu hoặc token không hợp lệ)
+ *       404:
+ *         description: Không tìm thấy album tương ứng
+ *       500:
+ *         description: Lỗi máy chủ nội bộ
+ */
+router.delete("/:albumId/songs/:songId", authGuard, albumController.removeSongFromAlbum);
+
+module.exports = router;
