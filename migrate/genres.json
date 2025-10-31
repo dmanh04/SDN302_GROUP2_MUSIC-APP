@@ -1,42 +1,47 @@
 [
-    {
-        "_id": "6904857bf94cd8e21b9b68d6",
-        "name": "Pop Ballad Việt",
-        "slug": "pop-ballad-viet",
-        "description": "Những bản nhạc Pop Ballad nhẹ nhàng, tình cảm của các nghệ sĩ Việt Nam.",
-        "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
-        "songs": []
-    },
-    {
-        "_id": "6904857bf94cd8e21b9b68d7",
-        "name": "K-Pop Dance",
-        "slug": "k-pop-dance",
-        "description": "Các ca khúc K-Pop sôi động, thích hợp cho việc tập nhảy và tiệc tùng.",
-        "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
-        "songs": []
-    },
-    {
-        "_id": "6904857bf94cd8e21b9b68d8",
-        "name": "US-UK Rock Classic",
-        "slug": "us-uk-rock-classic",
-        "description": "Tuyển tập những bài Rock kinh điển từ Mỹ và Anh thập niên 70, 80.",
-        "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
-        "songs": []
-    },
-    {
-        "_id": "6904857bf94cd8e21b9b68d9",
-        "name": "EDM Trance",
-        "slug": "edm-trance",
-        "description": "Thể loại nhạc điện tử Trance với nhịp điệu nhanh và dồn dập.",
-        "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
-        "songs": []
-    },
-    {
-        "_id": "6904857bf94cd8e21b9b68da",
-        "name": "Nhạc Không Lời",
-        "slug": "nhac-khong-loi",
-        "description": "Những bản nhạc không lời nhẹ nhàng, thích hợp để thư giãn hoặc làm việc.",
-        "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
-        "songs": []
-    }
+  {
+    "name": "Nhạc Trẻ V-Pop",
+    "slug": "nhac-tre-v-pop",
+    "description": "Các bài hát Pop và Ballad thịnh hành của nghệ sĩ Việt Nam hiện tại.",
+    "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
+    "createdAt": "2025-10-31T10:18:18.917Z",
+    "updatedAt": "2025-10-31T10:18:18.917Z",
+    "songs": []
+  },
+  {
+    "name": "Indie/Acoustic",
+    "slug": "indie-acoustic",
+    "description": "Những bản nhạc tự do, mộc mạc, đậm chất riêng của các nghệ sĩ Indie.",
+    "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
+    "createdAt": "2025-10-31T10:20:05.123Z",
+    "updatedAt": "2025-10-31T10:20:05.123Z",
+    "songs": []
+  },
+  {
+    "name": "Hip Hop/Rap Việt",
+    "slug": "hip-hop-rap-viet",
+    "description": "Những track Rap và Hip Hop mạnh mẽ, có vần điệu và thông điệp.",
+    "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
+    "createdAt": "2025-10-31T10:22:40.456Z",
+    "updatedAt": "2025-10-31T10:22:40.456Z",
+    "songs": []
+  },
+  {
+    "name": "Nhạc Phim Hàn Quốc (OST)",
+    "slug": "nhac-phim-han-quoc-ost",
+    "description": "Tuyển tập các ca khúc nhạc phim lãng mạn, cảm động từ Drama Hàn Quốc.",
+    "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
+    "createdAt": "2025-10-31T10:25:15.789Z",
+    "updatedAt": "2025-10-31T10:25:15.789Z",
+    "songs": []
+  },
+  {
+    "name": "Classic Rock US-UK",
+    "slug": "classic-rock-us-uk",
+    "description": "Những huyền thoại Rock từ thập niên 60 đến 80 của Mỹ và Anh.",
+    "thumbnail": "https://acemusic.com.vn/wp-content/uploads/2023/03/ace-6-1.jpg",
+    "createdAt": "2025-10-31T10:28:02.000Z",
+    "updatedAt": "2025-10-31T10:28:02.000Z",
+    "songs": []
+  }
 ]

@@ -23,3 +23,35 @@ exports.getGenres = async (req, res) => {
     }
 }
 
+exports.createGenre = async (req, res) => {
+    const { name, description, thumbnail } = req.body;
+
+    if (!name) {
+        return res.status(400).json(badRequest("Tên thể loại (name) là bắt buộc."));
+    }
+
+    try {
+        const existingGenre = await Genre.findOne({ name });
+        if (existingGenre) {
+            return res.status(400).json(badRequest("Thể loại này đã tồn tại."));
+        }
+
+        const newGenre = new Genre({
+            name,
+            description,
+            thumbnail
+        });
+
+        await newGenre.save();
+        res.status(201).json(created(newGenre.toObject(), "Tạo thể loại thành công."));
+    } catch (error) {
+        console.error('Lỗi khi tạo thể loại:', error);
+
+        if (error.name === 'ValidationError') {
+            return res.status(400).json(badRequest(error.message));
+        }
+
+        res.status(500).json(internalError(error.message));
+    }
+}
+
