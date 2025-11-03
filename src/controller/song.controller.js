@@ -76,7 +76,7 @@ exports.create = async (req, res) => {
             likes: 0,
             views: 0,
             liked_by: [],
-            created_by: req.user?.id || 'system'
+            created_by: req.user.id
         });
 
         await song.save();
@@ -97,14 +97,12 @@ exports.create = async (req, res) => {
     }
 };
 
-// Lấy tất cả Songs
 exports.findAll = async (req, res) => {
     try {
         const songs = await Song.find({})
             .populate('artists')
             .populate('genres')
             .populate('album_id');
-        // .populate('liked_by');
         res.status(200).json(ok(songs));
     } catch (error) {
         res.status(500).json(internalError(error.message));
@@ -118,13 +116,11 @@ exports.findOne = async (req, res) => {
             .populate('artists')
             .populate('genres')
             .populate('album_id');
-        // .populate('liked_by');
 
         if (!song) {
             return res.status(404).json(notFound('Bài hát không tìm thấy'));
         }
 
-        // Tăng lượt xem
         song.views = (song.views || 0) + 1;
         await song.save();
 
@@ -142,7 +138,6 @@ exports.update = async (req, res) => {
         if (!title || title.trim() === '') {
             return res.status(400).json(badRequest('Tên bài hát không được để trống'));
         }
-        // Decide slug: only regenerate if title changed
         let resolvedSlug = existSong?.slug || '';
         if (title && existSong && title.trim() !== (existSong.title || '').trim()) {
             resolvedSlug = await generateUniqueSlug(Song, title);
@@ -160,7 +155,6 @@ exports.update = async (req, res) => {
             return res.status(400).json(badRequest('Phải chọn ít nhất 1 thể loại'));
         }
 
-        // Kiểm tra artists, genres, album tồn tại
         const artistDocs = await Artist.find({ _id: { $in: artists } });
         if (artistDocs.length !== artists.length) {
             return res.status(404).json(notFound('Một số nghệ sĩ không tồn tại'));
@@ -231,13 +225,11 @@ exports.delete = async (req, res) => {
             return res.status(404).json(notFound('Bài hát không tìm thấy'));
         }
 
-        // Xóa song khỏi artists
         await Artist.updateMany(
             { _id: { $in: song.artists } },
             { $pull: { songs: id } }
         );
 
-        // Xóa song khỏi album
         if (song.album_id) {
             await Album.findByIdAndUpdate(song.album_id, { $pull: { songs: id } });
         }
@@ -248,7 +240,6 @@ exports.delete = async (req, res) => {
     }
 };
 
-// Lấy thống kê của bài hát
 exports.getStatistics = async (req, res) => {
     try {
         const { id } = req.params;
