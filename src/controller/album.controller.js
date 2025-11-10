@@ -30,10 +30,8 @@ exports.createAlbum = async (req, res) => {
 
     if (artist) {
         if (typeof artist === 'string') {
-            // If single value, convert to array
             artist = [artist];
         } else if (Array.isArray(artist)) {
-            // Already array - ensure all values are strings
             artist = artist.map(a => String(a));
         } else {
             artist = [];
@@ -52,7 +50,6 @@ exports.createAlbum = async (req, res) => {
             return res.status(400).json(badRequest("Album với tiêu đề này đã tồn tại."));
         }
 
-        // Handle image file upload (similar to song controller)
         const files = req.files || {};
         const imageFile = files.image?.[0];
 
@@ -116,12 +113,19 @@ exports.updateAlbum = async (req, res) => {
         }
     }
 
-    // Remove image from body if it's a string (we use file upload instead)
+    // Remove image from body if it's a string and no new file is uploaded
+    // We keep the existing image URL, so don't include it in updateData if it's just a string
     if (updateData.image && typeof updateData.image === 'string' && !imageFile) {
-        // Keep the string URL if no new file is uploaded
+        // If it's a string URL and no new file, remove it from updateData
+        // The existing image will remain unchanged
+        delete updateData.image;
     }
 
-    if (Object.keys(updateData).length === 0) {
+    // Remove last_modified_by from count check
+    const fieldsToCheck = { ...updateData };
+    delete fieldsToCheck.last_modified_by;
+
+    if (Object.keys(fieldsToCheck).length === 0) {
         return res.status(400).json(badRequest("Vui lòng cung cấp ít nhất 1 trường để cập nhật."));
     }
 
