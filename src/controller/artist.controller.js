@@ -1,5 +1,8 @@
+const { ROLE } = require("../constants/role")
+const Account = require("../models/account.model")
 const Artist = require("../models/artists.model")
 const Genre = require("../models/genres.model")
+const Role = require("../models/role.model")
 const {
   ok,
   created,
@@ -10,14 +13,8 @@ const {
 
 exports.createArtist = async (req, res) => {
   try {
-    const {
-      userId,
-      stageName,
-      bio,
-      location,
-      genreFocus,
-      socialLinks,
-    } = req.body
+    const { userId, stageName, bio, location, genreFocus, socialLinks } =
+      req.body
     const existing = await Artist.findOne({ userId })
     if (existing)
       return res
@@ -39,6 +36,10 @@ exports.createArtist = async (req, res) => {
       socialLinks,
     })
 
+    const account = await Account.findById(userId)
+    const artistRole = await Role.findOne({ name: ROLE.ARTIST })
+    account.roles = [...account.roles, artistRole.toObject()._id]
+    account.save()
     return res.status(201).json(created(artist))
   } catch (err) {
     console.error("❌ Lỗi khi tạo nghệ sĩ:", err)
@@ -108,7 +109,9 @@ exports.getArtistByUserId = async (req, res) => {
       .populate("userId")
 
     if (!artist) {
-      return res.status(404).json(notFound("Không tìm thấy nghệ sĩ với userId này."))
+      return res
+        .status(404)
+        .json(notFound("Không tìm thấy nghệ sĩ với userId này."))
     }
 
     return res.status(200).json(ok(artist))
