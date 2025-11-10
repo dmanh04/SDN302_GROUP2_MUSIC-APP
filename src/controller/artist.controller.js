@@ -1,5 +1,7 @@
 const Artist = require("../models/artists.model")
 const Genre = require("../models/genres.model")
+const Account = require("../models/account.model")
+const Role = require("../models/role.model")
 const {
   ok,
   created,
@@ -38,6 +40,26 @@ exports.createArtist = async (req, res) => {
       genreFocus,
       socialLinks,
     })
+
+    // Add ARTIST role to account
+    try {
+      const account = await Account.findById(userId)
+      if (account) {
+        const artistRole = await Role.findOne({ name: "ARTIST" })
+        if (artistRole) {
+          const hasArtistRole = account.roles.some(
+            (roleId) => roleId.toString() === artistRole._id.toString()
+          )
+          if (!hasArtistRole) {
+            account.roles.push(artistRole._id)
+            await account.save()
+          }
+        } else {
+        }
+      } else {
+      }
+    } catch (roleError) {
+    }
 
     return res.status(201).json(created(artist))
   } catch (err) {
