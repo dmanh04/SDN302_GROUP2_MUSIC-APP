@@ -14,8 +14,6 @@ exports.createArtist = async (req, res) => {
       userId,
       stageName,
       bio,
-      avatarUrl,
-      bannerUrl,
       location,
       genreFocus,
       socialLinks,
@@ -36,8 +34,6 @@ exports.createArtist = async (req, res) => {
       userId,
       stageName,
       bio,
-      avatarUrl,
-      bannerUrl,
       location,
       genreFocus,
       socialLinks,
@@ -56,6 +52,7 @@ exports.getAllArtists = async (req, res) => {
       .populate("genreFocus", "name")
       .populate("songs", "title coverUrl")
       .populate("albums", "title coverUrl releaseDate")
+      .populate("userId")
       .sort({ createdAt: -1 })
 
     return res.status(200).json(ok(artists))
@@ -96,6 +93,27 @@ exports.updateArtist = async (req, res) => {
     return res.status(200).json(ok(artist))
   } catch (err) {
     console.error("❌ Lỗi khi cập nhật nghệ sĩ:", err)
+    return res.status(500).json(internalError(err.message))
+  }
+}
+
+exports.getArtistByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params
+
+    const artist = await Artist.findOne({ userId })
+      .populate("genreFocus", "name description")
+      .populate("songs", "title")
+      .populate("albums", "title")
+      .populate("userId")
+
+    if (!artist) {
+      return res.status(404).json(notFound("Không tìm thấy nghệ sĩ với userId này."))
+    }
+
+    return res.status(200).json(ok(artist))
+  } catch (err) {
+    console.error("❌ Lỗi khi lấy nghệ sĩ theo userId:", err)
     return res.status(500).json(internalError(err.message))
   }
 }

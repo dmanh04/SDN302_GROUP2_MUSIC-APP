@@ -96,7 +96,7 @@ router.post(
     { name: 'image', maxCount: 1 },
     { name: 'file_path', maxCount: 1 },
   ]),
-  authGuard, permisionGuard([ROLE.ADMIN, ROLE.ARTIST]), songController.create
+  authGuard, permisionGuard(ROLE.ADMIN, ROLE.ARTIST), songController.create
 );
 
 /**
@@ -143,7 +143,7 @@ router.put(
     { name: 'file_path', maxCount: 1 },
   ]),
   authGuard,
-  permisionGuard([ROLE.ADMIN, ROLE.ARTIST]),
+  permisionGuard(ROLE.ADMIN, ROLE.ARTIST),
   songController.update
 );
 
@@ -165,7 +165,7 @@ router.put(
  *       200:
  *         description: Xóa thành công
  */
-router.delete("/:id", authGuard, permisionGuard([ROLE.ADMIN, ROLE.ARTIST]), songController.delete);
+router.delete("/:id", authGuard, permisionGuard(ROLE.ADMIN, ROLE.ARTIST), songController.delete);
 
 /**
  * @swagger

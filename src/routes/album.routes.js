@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const albumController = require("../controller/album.controller");
 const authGuard = require("../middleware/auth.guard");
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
+const permisionGuard = require("../middleware/permission.guard");
+const { ROLE } = require("../constants/role");
 
 /**
  * @swagger
@@ -60,7 +64,15 @@ router.get("/", albumController.getAlbums);
  *       400:
  *         description: Dữ liệu không hợp lệ hoặc album đã tồn tại
  */
-router.post("/create", authGuard, albumController.createAlbum);
+router.post(
+    "/create",
+    upload.fields([
+        { name: 'image', maxCount: 1 },
+    ]),
+    authGuard,
+    permisionGuard(ROLE.ADMIN, ROLE.ARTIST),
+    albumController.createAlbum
+);
 
 /**
  * @swagger
@@ -163,7 +175,15 @@ router.get("/:id/songs", albumController.getAlbumSongs);
  *       404:
  *         description: Không tìm thấy album để cập nhật
  */
-router.put("/:id", authGuard, albumController.updateAlbum);
+router.put(
+    "/:id",
+    upload.fields([
+        { name: 'image', maxCount: 1 },
+    ]),
+    authGuard,
+    permisionGuard(ROLE.ADMIN, ROLE.ARTIST),
+    albumController.updateAlbum
+);
 
 /**
  * @swagger

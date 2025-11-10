@@ -90,7 +90,7 @@ router.get("/:id", commentController.findOne);
 router.post(
     "/",
     authGuard,
-    permissionGuard([ROLE.ADMIN, ROLE.USER, ROLE.ARTIST]),
+    permissionGuard(ROLE.ADMIN, ROLE.USER, ROLE.ARTIST),
     commentController.create
 );
 

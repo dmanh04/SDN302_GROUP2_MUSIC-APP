@@ -1,6 +1,7 @@
 const Album = require('../models/albums.model');
 const slugify = require('slugify');
 const { ok, created, badRequest, notFound, internalError } = require('../utils/baseResponse');
+const { uploadAnyBuffer } = require('./file.controller');
 
 
 exports.getAlbums = async (req, res) => {
@@ -19,8 +20,27 @@ exports.getAlbums = async (req, res) => {
 };
 
 exports.createAlbum = async (req, res) => {
-    const { title, image, status, artist } = req.body;
+    let { title, image, status, artist } = req.body;
     const userId = req.user.id;
+
+
+    if (!artist && req.body['artist[]']) {
+        artist = req.body['artist[]'];
+    }
+
+    if (artist) {
+        if (typeof artist === 'string') {
+            // If single value, convert to array
+            artist = [artist];
+        } else if (Array.isArray(artist)) {
+            // Already array - ensure all values are strings
+            artist = artist.map(a => String(a));
+        } else {
+            artist = [];
+        }
+    } else {
+        artist = [];
+    }
 
     if (!title || !artist || artist.length === 0) {
         return res.status(400).json(badRequest("Tiêu đề (title) và Nghệ sĩ (artist) là bắt buộc."));
@@ -32,10 +52,21 @@ exports.createAlbum = async (req, res) => {
             return res.status(400).json(badRequest("Album với tiêu đề này đã tồn tại."));
         }
 
+        // Handle image file upload (similar to song controller)
+        const files = req.files || {};
+        const imageFile = files.image?.[0];
+
+        let uploadedImageUrl = typeof image === 'string' ? image : '';
+
+        if (imageFile && imageFile.buffer) {
+            const imageUrl = await uploadAnyBuffer(imageFile.buffer, 'zingmp5/files');
+            uploadedImageUrl = imageUrl || uploadedImageUrl;
+        }
+
         const newAlbum = new Album({
             title,
-            image,
-            status,
+            image: uploadedImageUrl,
+            status: status || 'published',
             artist,
             created_by: userId
         });
@@ -55,8 +86,40 @@ exports.createAlbum = async (req, res) => {
 
 exports.updateAlbum = async (req, res) => {
     const { id } = req.params;
-    let updateData = req.body;
+    let updateData = { ...req.body };
     const userId = req.user.id;
+
+    // Handle artist array from FormData
+    // Multer parses artist[] as array, but if single value it might be string
+    // Also check for artist[] key if multer didn't parse correctly
+    if (!updateData.artist && req.body['artist[]']) {
+        updateData.artist = req.body['artist[]'];
+    }
+
+    if (updateData.artist) {
+        if (typeof updateData.artist === 'string') {
+            updateData.artist = [updateData.artist];
+        } else if (Array.isArray(updateData.artist)) {
+            // Ensure all values are strings
+            updateData.artist = updateData.artist.map(a => String(a));
+        }
+    }
+
+    // Handle image file upload (similar to createAlbum)
+    const files = req.files || {};
+    const imageFile = files.image?.[0];
+
+    if (imageFile && imageFile.buffer) {
+        const imageUrl = await uploadAnyBuffer(imageFile.buffer, 'zingmp5/files');
+        if (imageUrl) {
+            updateData.image = imageUrl;
+        }
+    }
+
+    // Remove image from body if it's a string (we use file upload instead)
+    if (updateData.image && typeof updateData.image === 'string' && !imageFile) {
+        // Keep the string URL if no new file is uploaded
+    }
 
     if (Object.keys(updateData).length === 0) {
         return res.status(400).json(badRequest("Vui lòng cung cấp ít nhất 1 trường để cập nhật."));
@@ -168,7 +231,7 @@ exports.removeSongFromAlbum = async (req, res) => {
                 new: true // Trả về document sau khi cập nhật
             }
         ).populate('artist', 'stageName');
-        
+
         if (!updatedAlbum) {
             return res.status(404).json(notFound(`Không tìm thấy Album với ID: ${albumId}`));
         }
@@ -176,11 +239,11 @@ exports.removeSongFromAlbum = async (req, res) => {
         res.status(200).json(ok(updatedAlbum.toObject(), `Đã xóa bài hát ${songId} khỏi Album thành công.`));
     } catch (error) {
         console.error(`Lỗi khi xóa bài hát ${songId} khỏi Album ${albumId}:`, error);
-        
+
         if (error.name === 'CastError') {
-             return res.status(400).json(badRequest("ID Album hoặc ID Bài hát không hợp lệ."));
+            return res.status(400).json(badRequest("ID Album hoặc ID Bài hát không hợp lệ."));
         }
-        
+
         res.status(500).json(internalError(error.message));
     }
 };

@@ -111,9 +111,38 @@ router.get("/", artistController.getAllArtists)
 
 /**
  * @swagger
+ * /artists/user/{userId}:
+ *   get:
+ *     summary: Lấy thông tin nghệ sĩ theo userId
+ *     tags: [Artists]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema: { type: string }
+ *         required: true
+ *         description: ID người dùng (Account ID)
+ *     responses:
+ *       200:
+ *         description: Thành công
+ *         content:
+ *           application/json:
+ *             example:
+ *               code: 200
+ *               data:
+ *                 _id: "67305a98e6f77b4123456789"
+ *                 userId: "67234a3dfb8a9b2a11aa22dd"
+ *                 stageName: "LofiDreams"
+ *                 genreFocus: [{ _id: "671ff63a52b2a6a1b99c440a", name: "Lofi" }]
+ *       404:
+ *         description: Không tìm thấy nghệ sĩ với userId này
+ */
+router.get("/user/:userId", artistController.getArtistByUserId)
+
+/**
+ * @swagger
  * /artists/{id}:
  *   get:
- *     summary: Xem chi tiết nghệ sĩ
+ *     summary: Xem chi tiết nghệ sĩ theo ID
  *     tags: [Artists]
  *     parameters:
  *       - in: path
@@ -127,6 +156,7 @@ router.get("/", artistController.getAllArtists)
  *       404:
  *         description: Không tìm thấy
  */
+
 router.get("/:id", artistController.getArtistById)
 
 /**

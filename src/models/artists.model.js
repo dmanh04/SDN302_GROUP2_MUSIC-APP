@@ -4,14 +4,12 @@ const ArtistSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Account",
       required: true,
       unique: true,
     },
     stageName: { type: String, required: true },
     bio: { type: String, default: "" },
-    avatarUrl: { type: String, default: "" },
-    bannerUrl: { type: String, default: "" },
     location: { type: String, default: "" },
     genreFocus: [
       {
@@ -26,7 +24,6 @@ const ArtistSchema = new mongoose.Schema(
       facebook: String,
       tiktok: String,
     },
-    isVerified: { type: Boolean, default: false },
     followerCount: { type: Number, default: 0 },
     followingCount: { type: Number, default: 0 },
     songs: [
