@@ -1,4 +1,5 @@
 const Album = require('../models/albums.model');
+const Artist = require('../models/artists.model');
 const slugify = require('slugify');
 const { ok, created, badRequest, notFound, internalError } = require('../utils/baseResponse');
 const { uploadAnyBuffer } = require('./file.controller');
@@ -69,6 +70,13 @@ exports.createAlbum = async (req, res) => {
         });
 
         await newAlbum.save();
+
+        // Lưu album vào bảng artist
+        await Artist.updateMany(
+            { _id: { $in: artist } },
+            { $push: { albums: newAlbum._id } }
+        );
+
         res.status(201).json(created(newAlbum.toObject(), "Tạo album thành công."));
     } catch (error) {
         console.error('Lỗi khi tạo album:', error);
@@ -170,6 +178,12 @@ exports.deleteAlbum = async (req, res) => {
         if (!album) {
             return res.status(404).json(notFound("Không tìm thấy album để xóa."));
         }
+
+        // Xóa album khỏi bảng artist
+        await Artist.updateMany(
+            { _id: { $in: album.artist } },
+            { $pull: { albums: id } }
+        );
 
         res.status(204).end();
     } catch (error) {
